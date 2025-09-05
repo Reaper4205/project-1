@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="handheldfriendly" content="true">
+  <meta name="mobileoptimized" content="width">
+  <title>Reaper Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+    
+    body {
+      font-family: "Work Sans", sans-serif;
+      line-height: 1.6;
+      background-color: #111;
+      color: #ddd;
+      scroll-behavior: smooth;
+    }
+    
+    body.light-mode {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: rgba(0,0,0,0.7);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid #333;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .theme-toggle:hover {
+      transform: rotate(30deg) scale(1.1);
+      box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+    }
+    
+    .light-mode .theme-toggle {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid #ddd;
+    }
+    
+    .light-mode .theme-toggle:hover {
+      box-shadow: 0 0 15px rgba(142, 68, 173, 0.5);
+    }
+    
+    .theme-toggle i {
+      color: #ddd;
+      font-size: 1.2rem;
+    }
+    
+    .light-mode .theme-toggle i {
+      color: #333;
+    }
+    
+    /* Grim Reaper Navigation */
+    header {
+      background-color: #000;
+      padding: 1rem 0;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid #333;
+    }
+    
+    .light-mode header {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .left h1 {
+      color: #e40000;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+    }
+    
+    .left h1:hover {
+      animation: shake 0.5s ease infinite;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-3px); }
+      75% { transform: translateX(3px); }
+    }
+    
+    .light-mode .left h1 {
+      color: #8e44ad;
+    }
+    
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+    
+    nav ul li {
+      margin-left: 30px;
+      position: relative;
+    }
+    
+    nav ul li a {
+      color: #ddd;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 15px;
+      position: relative;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+    
+    .light-mode nav ul li a {
+      color: #333;
+    }
+    
+    /* Scythe Slash Effect */
+    nav ul li a::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, #e74c3c, #8e44ad);
+      transition: width 0.3s ease;
+    }
+    
+    .light-mode nav ul li a::before {
+      background: linear-gradient(90deg, #8e44ad, #3498db);
+    }
+    
+    /* Skull Chain Links */
+    .chain-container {
+      position: absolute;
+      left: 50%;
+      bottom: -45px;
+      transform: translateX(-50%);
+      height: 50px; /* Increased height to accommodate skull */
+      /* overflow: hidden; */
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .chain {
+      position: relative; 
+      height: 100%;
+      width: 2px;
+      background: linear-gradient(to bottom, #8e44ad, #e74c3c);
+      margin: 0 auto;
+    }
+    
+    .light-mode .chain {
+      background: linear-gradient(to bottom, #3498db, #8e44ad);
+    }
+    
+    .chain-link {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #8e44ad;
+      border-radius: 50%;
+      left: -3px;
+      transition: transform 0.3s;
+    }
+    
+    .light-mode .chain-link {
+      background-color: #3498db;
+    }
+    
+    .skull {
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 20px;
+      color: #e40000;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      z-index: 1; /* Ensure skull appears above other elements */
+      display: block; /* Ensure it's displayed */
+    }
+    
+    .skull:hover {
+      transform: translateX(-50%) scale(1.5) rotate(360deg);
+    }
+    
+    .light-mode .skull {
+      color: #8e44ad;
+    }
+    
+    nav ul li:hover .chain-container {
+      opacity: 1;
+    }
+    
+    nav ul li:hover .skull {
+      transform: translateX(-50%) scale(1);
+      animation: skullFloat 2s infinite ease-in-out;
+    }
+    
+    @keyframes skullFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0) rotate(-5deg) scale(1); }
+      50% { transform: translateX(-50%) translateY(-5px) rotate(5deg) scale(1.1); }
+    }
+    
+    nav ul li a:hover {
+      color: #e40000;
+      transform: translateY(-3px);
+    }
+    
+    .light-mode nav ul li a:hover {
+      color: #8e44ad;
+    }
+    
+    nav ul li a:hover::before {
+      width: 100%;
+    }
+    
+    nav ul li a.active {
+      color: #e40000;
+    }
+    
+    .light-mode nav ul li a.active {
+      color: #8e44ad;
+    }
+    
+    nav ul li a.active::before {
+      width: 100%;
+    }
+    
+    nav ul li a.active ~ .chain-container {
+      opacity: 1;
+    }
+    
+    nav ul li a.active ~ .chain-container .skull {
+      transform: translateX(-50%) scale(1);
+      animation: skullFloat 2s infinite ease-in-out, skullGlow 1.5s infinite alternate;
+    }
+    
+    @keyframes skullGlow {
+      from { filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.5)); }
+      to { filter: drop-shadow(0 0 15px rgba(231, 76, 60, 0.8)); }
+    }
+    
+    .light-mode nav ul li a.active ~ .chain-container .skull {
+      animation: skullFloat 2s infinite ease-in-out, skullGlowLight 1.5s infinite alternate;
+    }
+    
+    @keyframes skullGlowLight {
+      from { filter: drop-shadow(0 0 5px rgba(142, 68, 173, 0.5)); }
+      to { filter: drop-shadow(0 0 15px rgba(142, 68, 173, 0.8)); }
+    }
+    
+     /* Hero Section */
+    .hero-section {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 80px;
+    }
+    
+    .video-background {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(0.4);
+    }
+    
+    .dark-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* background: rgba(0, 0, 0, 0.7); */
+      z-index: -1;
+    }
+    
+    .light-mode .video-background {
+      filter: brightness(0.6) sepia(0.3);
+    }
+    
+    .light-mode .dark-overlay {
+      background: rgba(245, 245, 245, 0.285);
+    }
+    
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    .hero-text {
+      flex: 1;
+      text-align: left;
+      padding-right: 50px;
+    }
+    
+    .hero-text h2 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: #fff;
+      animation: fadeInUp 1s ease;
+      cursor: default;
+    }
+    
+    .hero-text h2:hover .highlight {
+      animation: gradientMove 1s linear infinite, textPulse 0.5s ease infinite alternate;
+    }
+    
+    @keyframes textPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.05); }
+    }
+    
+    .light-mode .hero-text h2 {
+      color: #101010;
+    }
+    
+    .hero-text h3 {
+      font-size: 1.5rem;
+      color: #e40000;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease 0.2s forwards;
+      opacity: 0;
+      cursor: default;
+    }
+    
+    .hero-text h3:hover {
+      animation: shake 0.5s ease;
+    }
+    
+    .light-mode .hero-text h3 {
+      color: #8e44ad;
+    }
+    
+    .hero-text p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #aaa;
+      animation: fadeInUp 1s ease 0.4s forwards;
+      opacity: 0;
+      cursor: default;
+    }
+    
+    .hero-text p:hover {
+      transform: translateX(15px);
+      color: #fff;
+    }
+    
+    .light-mode .hero-text p {
+      color: #d2cfcf;
+    }
+    
+    .light-mode .hero-text p:hover {
+      color: #000000;
+    }
+    
+    .highlight {
+      background: linear-gradient(45deg, #e74c3c, #8e44ad, #3498db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: gradientMove 3s linear infinite;
+      display: inline-block;
+    }
+    
+    .light-mode .highlight {
+      background: linear-gradient(45deg, #8e44ad, #3498db, #2ecc71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: gradientMove 3s linear infinite, fadeIn 1s ease;
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .hero-image {
+      flex: 1;
+      position: relative;
+      animation: fadeInRight 1s ease 0.6s forwards;
+      opacity: 0;
+    }
+    
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    
+    .hero-image img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 10px;
+      filter: sepia(0.3) contrast(1.1);
+      transition: transform 0.3s, filter 0.3s;
+    }
+    
+    .hero-image:hover img {
+      transform: scale(1.03);
+      filter: sepia(0.5) contrast(1.2) brightness(0.9);
+    }
+    
+    .light-mode .hero-image img {
+      filter: none;
+    }
+    
+    .light-mode .hero-image:hover img {
+      filter: brightness(1.05) sepia(0.5) contrast(1.2);
+    }
+    
+    /* Sections */
+    .section {
+      padding: 100px 0;
+      background-color: #111;
+      border-top: 1px solid #222;
+    }
+    
+    .light-mode .section {
+      background-color: #f5f5f5;
+      border-top: 1px solid #ddd;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      color: #e40000;
+      position: relative;
+      display: inline-block;
+      animation: fadeInUp 1s ease;
+      cursor: default;
+    }
+    
+    .section-title:hover {
+      transform: skewX(-10deg);
+    }
+    
+    .section-title:hover::after {
+      width: 100%;
+    }
+    
+    .light-mode .section-title {
+      color: #8e44ad;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background: linear-gradient(90deg, #e74c3c, #8e44ad);
+      transition: width 0.5s ease;
+    }
+    
+    .light-mode .section-title::after {
+      background: linear-gradient(90deg, #8e44ad, #3498db);
+    }
+    
+    /* About Section */
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+    
+    .about-content p {
+      flex: 2;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #ddd;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.2s forwards;
+      cursor: default;
+    }
+    
+    .about-content p:hover {
+      text-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+    }
+    
+    .light-mode .about-content p {
+      color: #333;
+    }
+    
+    .light-mode .about-content p:hover {
+      text-shadow: 0 0 10px rgba(142, 68, 173, 0.5);
+    }
+    
+    .skills {
+      flex: 1;
+    }
+    
+    .skills h3 {
+      margin-bottom: 20px;
+      color: #e74c3c;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.4s forwards;
+      cursor: default;
+    }
+    
+    .skills h3:hover {
+      letter-spacing: 2px;
+    }
+    
+    .light-mode .skills h3 {
+      color: #8e44ad;
+    }
+    
+    .skills ul {
+      list-style: none;
+    }
+    
+    .skills li {
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      background-color: #222;
+      border-radius: 5px;
+      color: #ddd;
+      border-left: 3px solid #e40000;
+      transform: translateX(-20px);
+      opacity: 0;
+      cursor: default;
+    }
+    
+    .skills li:hover {
+      transform: translateX(10px);
+      box-shadow: 0 5px 15px rgba(239, 69, 50, 0.3);
+    }
+
+    @keyframes slideIn {
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .light-mode .skills li {
+      background-color: #fff;
+      color: #333;
+      border-left: 3px solid #8e44ad;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .light-mode .skills li:hover {
+      box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
+    }
+    
+    /* Projects Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    
+    .project-card {
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s;
+      border: 1px solid #333;
+      transform: translateY(20px);
+      opacity: 0;
+      position: relative;
+    }
+    
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, rgba(231, 76, 60, 0.1), rgba(142, 68, 173, 0.1));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .project-card:hover::before {
+      opacity: 1;
+    }
+    
+    .light-mode .project-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .light-mode .project-card::before {
+      background: linear-gradient(45deg, rgba(142, 68, 173, 0.1), rgba(52, 152, 219, 0.1));
+    }
+    
+    .project-card:nth-child(1) { animation: fadeInUp 0.5s ease 0.2s forwards; }
+    .project-card:nth-child(2) { animation: fadeInUp 0.5s ease 0.4s forwards; }
+    
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(231, 76, 60, 0.2);
+    }
+    
+    .light-mode .project-card:hover {
+      box-shadow: 0 15px 30px rgba(142, 68, 173, 0.2);
+    }
+    
+    .project-image {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: grayscale(0.3) contrast(1.1);
+      transition: transform 0.5s, filter 0.5s;
+    }
+    
+    .project-card:hover .project-image img {
+      transform: scale(1.1);
+      filter: grayscale(0) contrast(1.2);
+    }
+    
+    .light-mode .project-image img {
+      filter: none;
+    }
+    
+    .project-card h3 {
+      padding: 20px 20px 10px;
+      color: #e40000;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .project-card h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      width: 0;
+      height: 2px;
+      background: #e40000;
+      transition: width 0.3s;
+    }
+    
+    .project-card:hover h3::after {
+      width: calc(100% - 40px);
+    }
+    
+    .light-mode .project-card h3 {
+      color: #8e44ad;
+    }
+    
+    .light-mode .project-card h3::after {
+      background: #8e44ad;
+    }
+    
+    .project-card p {
+      padding: 0 20px 20px;
+      color: #aaa;
+      transition: color 0.3s;
+    }
+    
+    .project-card:hover p {
+      color: #fff;
+    }
+    
+    .light-mode .project-card p {
+      color: #666;
+    }
+    
+    .light-mode .project-card:hover p {
+      color: #333;
+    }
+    
+    .project-link {
+      display: inline-block;
+      margin: 0 20px 20px;
+      color: #8e44ad;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s;
+      position: relative;
+    }
+    
+    .project-link::after {
+      content: '→';
+      position: absolute;
+      right: -20px;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .project-link:hover {
+      color: #e40000;
+      transform: translateX(5px);
+    }
+    
+    .project-link:hover::after {
+      right: -25px;
+      opacity: 1;
+    }
+    
+    .light-mode .project-link {
+      color: #3498db;
+    }
+    
+    .light-mode .project-link:hover {
+      color: #8e44ad;
+    }
+    
+    /* Contact Section */
+    .contact-content {
+      display: flex;
+      gap: 50px;
+      margin-top: 50px;
+    }
+    
+    .contact-info {
+      flex: 1;
+    }
+    
+    .contact-info p {
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      color: #ddd;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      cursor: default;
+    }
+    
+    .contact-info p:hover i {
+      animation: bounce 0.5s ease infinite alternate;
+    }
+    
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-5px); }
+    }
+    
+    .light-mode .contact-info p {
+      color: #333;
+    }
+    
+    .contact-info i {
+      margin-right: 10px;
+      color: #e40000;
+      transition: transform 0.3s;
+    }
+    
+    .light-mode .contact-info i {
+      color: #8e44ad;
+    }
+    
+    .social-links {
+      margin-top: 30px;
+    }
+    
+    .social-links a {
+      display: inline-block;
+      margin-right: 15px;
+      color: #8e44ad;
+      font-size: 1.5rem;
+      transition: all 0.3s;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.2s forwards;
+    }
+    
+    .social-links a:hover {
+      color: #e74c3c;
+      transform: translateY(-5px) scale(1.2);
+    }
+    
+    .light-mode .social-links a {
+      color: #3498db;
+    }
+    
+    .light-mode .social-links a:hover {
+      color: #8e44ad;
+    }
+    
+    .contact-form {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .contact-form input,
+    .contact-form textarea {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #222;
+      border: 1px solid #333;
+      border-radius: 5px;
+      font-size: 1rem;
+      color: #ddd;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.4s forwards;
+      transition: all 0.3s;
+    }
+    
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: #e40000;
+      box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+    }
+    
+    .light-mode .contact-form input,
+    .light-mode .contact-form textarea {
+      background: #fff;
+      border: 1px solid #ddd;
+      color: #333;
+    }
+    
+    .light-mode .contact-form input:focus,
+    .light-mode .contact-form textarea:focus {
+      border-color: #8e44ad;
+      box-shadow: 0 0 10px rgba(142, 68, 173, 0.3);
+    }
+    
+    .contact-form textarea {
+      height: 150px;
+      resize: vertical;
+    }
+    
+    
+    /* Buttons */
+    .cta-button, .submit-button {
+      display: inline-block;
+      /* padding: 12px 30px;  */
+      background: linear-gradient(90deg, #e74c3c, #8e44ad);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: 500;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0;
+      animation: fadeInUp 1s ease 0.8s forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-button::before, .submit-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .cta-button:hover::before, .submit-button:hover::before {
+      left: 100%;
+    }
+    
+    .light-mode .cta-button, 
+    .light-mode .submit-button {
+      background: linear-gradient(90deg, #8e44ad, #3498db);
+    }
+    
+    .cta-button:hover, .submit-button:hover {
+      background: linear-gradient(90deg, #c0392b, #9b59b6);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(231, 76, 60, 0.3);
+    }
+    
+    .light-mode .cta-button:hover, 
+    .light-mode .submit-button:hover {
+      background: linear-gradient(90deg, #9b59b6, #2980b9);
+      box-shadow: 0 10px 20px rgba(142, 68, 173, 0.3);
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #000;
+      color: #aaa;
+      border-top: 1px solid #333;
+      position: relative;
+    }
+    
+    footer::before {
+      content: '☠';
+      position: absolute;
+      left: 50%;
+      top: -15px;
+      transform: translateX(-50%);
+      font-size: 24px;
+      background: #000;
+      padding: 0 20px;
+    }
+    
+    .light-mode footer {
+      background-color: #fff;
+      color: #666;
+      border-top: 1px solid #ddd;
+    }
+    
+    .light-mode footer::before {
+      background: #fff;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 80px;
+      }
+    
+      .hero-text {
+        padding-right: 0;
+        margin-bottom: 40px;
+      }
+    
+      .about-content, .contact-content {
+        flex-direction: column;
+      }
+    
+      nav ul li {
+        margin-left: 15px;
+      }
+      
+      .chain-container {
+        display: none;
+      }
+      
+      .theme-toggle {
+        top: 15px;
+        right: 15px;
+      }
+    }
+    
+    /* Animation Classes */
+    .slide-in {
+      animation: slideIn 0.5s ease forwards;
+    }
+    
+    .fade-in-up {
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    
+
+    /* Enhanced Mobile Styles */
+    @media (max-width: 768px) {
+      /* Increase tap targets */
+      nav ul li a {
+        padding: 15px 20px;
+      }
+      
+      /* Improve button interaction */
+      .cta-button, .submit-button {
+        padding: 15px 35px;
+      }
+      
+      /* Adjust hero section for mobile */
+      .hero-section {
+        height: auto;
+        min-height: 100vh;
+        padding: 100px 0 50px;
+      }
+      
+      /* Make form inputs more touch-friendly */
+      .contact-form input,
+      .contact-form textarea {
+        padding: 18px;
+        font-size: 16px;
+      }
+      
+      /* Prevent zooming on inputs */
+      input, textarea, select {
+        font-size: 16px;
+      }
+      
+      /* Improve project card interaction */
+      .project-card {
+        transform: none !important;
+      }
+      
+      /* Add active states for touch feedback */
+      a:active, button:active, .project-card:active {
+        transform: scale(0.98) !important;
+      }
+      
+      /* Adjust skull size for touch */
+      .skull {
+        font-size: 24px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      /* Further adjustments for small screens */
+      .hero-text h2 {
+        font-size: 2.2rem;
+      }
+      
+      .hero-text h3 {
+        font-size: 1.2rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      /* Stack navigation on very small screens */
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      nav ul li {
+        margin: 5px 10px;
+      }
+      
+      /* Adjust project grid */
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+   
+    .project-vid {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .project-vid video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      filter: grayscale(0.3) contrast(1.1);
+      transition: transform 0.5s, filter 0.5s;
+    }
+    
+    .project-card:hover .project-vid video {
+      transform: scale(1.1);
+      filter: grayscale(0) contrast(1.2);
+    }
+    
+    .light-mode .project-vid video {
+      filter: none;
+    }
+    
+
+
+  </style>
+</head>
+<body>
+  <!-- Theme Toggle -->
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <i class="fas fa-moon"></i>
+  </div>
+
+  <header>
+    <nav>
+      <div class="left">
+        <h1>𝕽𝖊𝖆𝖕𝖊𝖗</h1>
+      </div>
+      <div class="right">
+        <ul>
+          <li>
+            <a href="#home" onclick="toggleLink(this)">Home</a>
+            <div class="chain-container">
+              <div class="chain">
+                <div class="chain-link" style="top: 5px;"></div>
+                <div class="chain-link" style="top: 15px;"></div>
+                <div class="chain-link" style="top: 25px;"></div>
+                <div class="skull">💀</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#about" onclick="toggleLink(this)">About</a>
+            <div class="chain-container">
+              <div class="chain">
+                <div class="chain-link" style="top: 5px;"></div>
+                <div class="chain-link" style="top: 15px;"></div>
+                <div class="chain-link" style="top: 25px;"></div>
+                <div class="skull">💀</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#projects" onclick="toggleLink(this)">Projects</a>
+            <div class="chain-container">
+              <div class="chain">
+                <div class="chain-link" style="top: 5px;"></div>
+                <div class="chain-link" style="top: 15px;"></div>
+                <div class="chain-link" style="top: 25px;"></div>
+                <div class="skull">💀</div>
+              </div>
+            </div>
+          </li>
+          <li>
+            <a href="#contact" onclick="toggleLink(this)">Contact</a>
+            <div class="chain-container">
+              <div class="chain">
+                <div class="chain-link" style="top: 5px;"></div>
+                <div class="chain-link" style="top: 15px;"></div>
+                <div class="chain-link" style="top: 25px;"></div>
+                <div class="skull">💀</div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <section id="home" class="hero-section">
+     <!-- Video Background -->
+    <video autoplay muted loop playsinline class="video-background">
+      <source src="https://www.dropbox.com/scl/fi/2bffgw6qwowpamsl38m4v/rrr.mp4?rlkey=p25f0t4ev3poa5cvjqq7b957q&st=an1b7fss&dl=1" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="dark-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h2>Hi, I'm <span class="highlight">𝕽𝖊𝖆𝖕𝖊𝖗</span></h2>
+        <h3>Web Developer</h3>
+        <p>Creating dark, powerful websites that deliver results</p>
+        <a href="#contact" class="cta-button">Summon Me</a>
+      </div>
+      <div class="hero-image">
+        <img src="https://www.dropbox.com/scl/fi/kfsgbcaxg5dkdn7s53h1u/downloadr.webp?rlkey=0308xebrwp98pwt8tc2ecanka&st=jqx5f0ho&dl=1" alt="Reaper">
+      </div>
+    </div>
+  </section>
+  
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title">About The Reaper</h2>
+      <div class="about-content">
+        <p>I'm a shadowy web developer with expertise in dark design patterns. With 1 year of experience harvesting souls through code, I specialize in creating responsive, haunting websites that help businesses establish their digital underworld presence.</p>
+        <div class="skills">
+          <h3>My Tools</h3>
+          <ul>
+            <li style="animation: slideIn 0.5s ease 0.2s forwards">HTML5 & CSS3 (Dark Arts)</li>
+            <li style="animation: slideIn 0.5s ease 0.3s forwards">JavaScript (Necromancy)</li>
+            <li style="animation: slideIn 0.5s ease 0.6s forwards">UI/UX (Torture Design)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title">My Harvest</h2>
+      <div class="projects-grid">
+        <div class="project-card" style="animation: fadeInUp 0.5s ease 0.2s forwards">
+          <div class="project-vid">
+            <video autoplay muted loop playsinline class="project-vid">
+              <source src="https://www.dropbox.com/scl/fi/2jaixsj35cb1kuacbv76j/login.mp4?rlkey=eg4dyng6ukqcxth67q5cnsc5u&st=nznmce98&dl=1" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <h3>Underworld Log-in pathway</h3>
+          <p>An Entrance form for the dark world!</p>
+          <a href="https://www.sololearn.com/en/compiler-playground/W7Xf885G6xhP/?ref=app" class="project-link">View Souls Gathered</a>
+        </div>
+        <div class="project-card" style="animation: fadeInUp 0.5s ease 0.4s forwards">
+          <div class="project-vid">
+            <video autoplay muted loop playsinline class="project-vid">
+              <source src="https://www.dropbox.com/scl/fi/ta5njcnnhf6zlh669kw6o/mm.mp4?rlkey=yz2w5ugcxn4nkabs9q62iw077&st=i49sgahi&dl=1" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <h3>My boon to the delight fairy's soul</h3>
+          <p>A Mystical Script Illusion with the Sacred Hymns.</p>
+          <a href="https://www.sololearn.com/en/compiler-playground/We7Rz0M988gW/?ref=app" class="project-link">View Precious Soul</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title">Summon The Reaper</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <p>If you seek to harvest souls or build your digital underworld ☠️</p>
+          <p><i class="fas fa-envelope"></i> reperk90@gmail.com</p>
+          <p><i class="fas fa-phone"></i> 931090xxxx</p>
+          <div class="social-links">
+            <a href="#" style="animation-delay: 0.2s"><i class="fab fa-github"></i></a>
+            <a href="#" style="animation-delay: 0.3s"><i class="fab fa-linkedin"></i></a>
+            <a href="#" style="animation-delay: 0.4s"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+        <form class="contact-form">
+          <input type="text" placeholder="Your Name" required style="animation-delay: 0.2s">
+          <input type="email" placeholder="Your Soul's Email" required style="animation-delay: 0.3s">
+          <textarea placeholder="Your Dark Message" required style="animation-delay: 0.4s"></textarea>
+          <button type="submit" class="submit-button" style="animation-delay: 0.5s">Send to Underworld</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 𝕽𝖊𝖆𝖕𝖊𝖗. All souls reserved.</p>
+  </footer>
+
+  <script>
+
+    
+
+    // Add touch event listeners for better mobile interaction
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add touch feedback for buttons
+      const buttons = document.querySelectorAll('a, button, .project-card');
+      buttons.forEach(button => {
+        button.addEventListener('touchstart', function() {
+          this.classList.add('active-touch');
+        });
+        
+        button.addEventListener('touchend', function() {
+          this.classList.remove('active-touch');
+        });
+      });
+      
+      // Prevent default touch behavior for interactive elements
+      const interactiveElements = document.querySelectorAll('a, button, input, textarea');
+      interactiveElements.forEach(el => {
+        el.addEventListener('touchstart', function(e) {
+          e.stopPropagation();
+        }, { passive: true });
+      });
+      
+      // Improve scroll performance on mobile
+      let lastScroll = 0;
+      window.addEventListener('scroll', function() {
+        const now = Date.now();
+        if (now - lastScroll >= 100) {
+          lastScroll = now;
+          // Your existing scroll logic
+          const elements = document.querySelectorAll('.section-title, .skills li, .project-card, .contact-info p, .social-links a, .contact-form input, .contact-form textarea, .submit-button');
+          elements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+            
+            if (elementPosition < screenPosition) {
+              element.style.animationPlayState = 'running';
+            }
+          });
+        }
+      }, { passive: true });
+    });
+
+
+
+
+
+    // Theme Toggle
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      const icon = document.querySelector('.theme-toggle i');
+      if (document.body.classList.contains('light-mode')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+      
+      // Force redraw to fix gradient text issue
+      const highlight = document.querySelector('.highlight');
+      highlight.style.background = highlight.style.background;
+    }
+    
+    // Navigation
+    function toggleLink(clickedLink) {
+      const links = document.querySelectorAll('nav ul li a');
+      links.forEach(link => {
+        if (link !== clickedLink) {
+          link.classList.remove('active');
+        }
+      });
+      clickedLink.classList.add('active');
+      
+      // Scroll to section
+      const targetId = clickedLink.getAttribute('href');
+      const targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    
+    // Set home as active by default
+    document.addEventListener('DOMContentLoaded', function() {
+      const homeLink = document.querySelector('nav ul li a[href="#home"]');
+      if (homeLink) {
+        homeLink.classList.add('active');
+      }
+      
+      // Initialize animations
+      const animateOnScroll = () => {
+        const elements = document.querySelectorAll('.section-title, .skills li, .project-card, .contact-info p, .social-links a, .contact-form input, .contact-form textarea, .submit-button');
+        elements.forEach(element => {
+          const elementPosition = element.getBoundingClientRect().top;
+          const screenPosition = window.innerHeight / 1.3;
+          
+          if (elementPosition < screenPosition) {
+            element.style.animationPlayState = 'running';
+          }
+        });
+      };
+      
+      // Make skulls interactive
+      const skulls = document.querySelectorAll('.skull');
+      skulls.forEach(skull => {
+        skull.addEventListener('click', () => {
+          skull.style.animation = 'none';
+          setTimeout(() => {
+            skull.style.animation = 'skullFloat 2s infinite ease-in-out, skullGlow 1.5s infinite alternate';
+          }, 10);
+        });
+      });
+      
+      window.addEventListener('scroll', animateOnScroll);
+      animateOnScroll(); // Run once on load
+    });
+  </script>
+  <script src="portfolio.js"></script>
+</body>
+</html>
